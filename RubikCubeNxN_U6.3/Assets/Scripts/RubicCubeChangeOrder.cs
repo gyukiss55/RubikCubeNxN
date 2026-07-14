@@ -1,7 +1,5 @@
-//using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-//using UnityEditor;
 using UnityEngine;
 
 public struct Array4<T>
@@ -171,11 +169,9 @@ public class RubicCubeChangeOrder : MonoBehaviour
         }
         Vector2Int key = new Vector2Int(dirNum, row);
         Debug.Log($"Key:{key}");
-        //Assert.IsTrue(replaceOrder.ContainsKey(key));
         if (replaceOrder.ContainsKey(key))
         {
             List<Array4<Vector3Int>> value = replaceOrder[key];
-            //Assert.Equals(value.Count, 1);
             foreach (Array4<Vector3Int> v in value)
             {
                 int i0 =Coord2Index(v._item0.x, v._item0.y, v._item0.z);

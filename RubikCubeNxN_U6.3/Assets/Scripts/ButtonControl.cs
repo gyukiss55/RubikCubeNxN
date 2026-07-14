@@ -1,10 +1,6 @@
 
-//using System.Collections.Generic;
 using TMPro;
-//using Unity.VisualScripting;
 using UnityEngine;
-//using UnityEngine.UI;
-//using UnityEngine.UIElements;
 
 public class ButtonControl : MonoBehaviour
 {
@@ -70,7 +66,7 @@ public class ButtonControl : MonoBehaviour
         }
     }
 
-
+    /*
     void ButtonRotateClick(char ch, bool inv)
     {
         if (rubicCube != null)
@@ -326,5 +322,5 @@ public class ButtonControl : MonoBehaviour
             }
         }
     }
-
+    */
 }
