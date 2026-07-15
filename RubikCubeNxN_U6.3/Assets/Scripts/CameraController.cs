@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 
 
@@ -49,8 +50,8 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            bool isShiftPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-            bool isCtrlPressed = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+            bool isShiftPressed = Keyboard.current.leftShiftKey.isPressed || Keyboard.current.rightShiftKey.isPressed;
+            bool isCtrlPressed = Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed;
             if (!isShiftPressed || !isCtrlPressed)
             {
                 if (isLocked)
@@ -68,8 +69,9 @@ public class CameraController : MonoBehaviour
 
 
             // Get mouse input
-            rotationX += Input.GetAxis("Mouse X") * sensitivity;
-            rotationY -= Input.GetAxis("Mouse Y") * sensitivity;
+            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+            rotationX += mouseDelta.x * sensitivity;
+            rotationY -= mouseDelta.y * sensitivity;
 
             // Clamp vertical rotation to prevent flipping
             rotationY = Mathf.Clamp(rotationY, -60f, 60f);
