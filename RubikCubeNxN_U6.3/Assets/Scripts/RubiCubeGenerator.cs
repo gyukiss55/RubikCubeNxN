@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class RubiCubeGenerator : MonoBehaviour
@@ -20,13 +21,7 @@ public class RubiCubeGenerator : MonoBehaviour
     bool isMovingDone = true;
 
     void Start()
-    {/*
-        GenerateCube("cube000", new Vector3(0, 0, 0));
-        GenerateCube("cube111", new Vector3(1, 1, 1));
-        GenerateCube("cube222", new Vector3(2, 2, 2));
-        GenerateCube("cube333", new Vector3(-1, -1, -1));
-        GenerateCube("cube444", new Vector3(-2, -2, -2));
-        */
+    {
         Generate5x5x5Rubic();
         DumpCurrentCubeIndices();
     }
@@ -136,6 +131,35 @@ public class RubiCubeGenerator : MonoBehaviour
         }
         quad.name = name;
 
+        AddText(parent.name, quad);
+
+    }
+
+    void AddText(string nameParent, GameObject parent)
+    {
+        string name = nameParent.Substring(4, nameParent.Length - 4);
+        GameObject textGO = new GameObject(name + "-text");
+        textGO.transform.SetParent(parent.transform);
+
+        TextMeshPro tmp = textGO.AddComponent<TextMeshPro>();
+
+        tmp.text = name.ToString();
+        tmp.fontSize = 30.0f;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.color = Color.black;
+
+        textGO.transform.localScale = Vector3.one * 0.1f;
+
+        float delta = -0.05f;
+        // Tip of cone
+        textGO.transform.localPosition =
+            new Vector3(
+                0,
+                0,
+                delta);
+
+        // Face camera if desired
+        textGO.transform.localRotation = Quaternion.identity;
     }
 
     public void RotateSubCubes(int directionNum, int rows) // direction -> X, Y, Z, x, y, z /  rows -> 0b00001, 0b10000, 0b00011, 0b11000, 0b11111,
@@ -179,7 +203,7 @@ public class RubiCubeGenerator : MonoBehaviour
         int mask = 1;
         for (int i = 0; i < rubicCubeChangeOrder.level - 1; ++i)
         {
-            if ((rows & mask) == 0)
+            if ((rows & mask) != 0)
                 rubicCubeChangeOrder.GetReplaceIndeces(dir, i, list);
             Debug.Log($"mask:{mask}");
             mask <<= 1;

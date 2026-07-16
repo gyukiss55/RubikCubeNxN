@@ -53,7 +53,7 @@ public class RubicCubeChangeOrder : MonoBehaviour
 
     public bool Initialize (int levelIn)
     {
-        Debug.Log($"RubiCubeChangeOrder.Initialize: in-{levelIn}");
+        Debug.Log($"RubiCubeChangeOrder.Initialize: in:{levelIn}");
         level = 0;
         replaceOrder.Clear ();
         switch (levelIn)
@@ -79,7 +79,6 @@ public class RubicCubeChangeOrder : MonoBehaviour
 
     public void GenerateChangeOrder(int dir, int lev)
     {
-        Vector2Int key = new Vector2Int(dir, level);
         List<Array4<Vector3Int>> replaceOrder1 = new List<Array4<Vector3Int>>();
         for (int coord1  = 0; coord1 < level - 1; coord1++)
         {
@@ -134,6 +133,7 @@ public class RubicCubeChangeOrder : MonoBehaviour
 
     void DumpReplaceOrder ()
     {
+        Debug.Log("DumpReplaceOrder: Key (dir, level)");
         foreach (var v1  in replaceOrder)
         {
             Debug.Log($"Key:{v1.Key}:");
@@ -165,7 +165,7 @@ public class RubicCubeChangeOrder : MonoBehaviour
         {
             if (dir == Vector3.forward)
                 inv = true;
-            dirNum = 0;
+            dirNum = 2;
         }
         Vector2Int key = new Vector2Int(dirNum, row);
         Debug.Log($"Key:{key}");
