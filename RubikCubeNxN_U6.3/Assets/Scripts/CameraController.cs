@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
     public float rotationY = 30f; // Rotation around Y-axis
 
     //private int viewIndex = 0;
+
     public Vector3 posCamera = Vector3.zero;
     public bool setPosCamera = false;
     bool isLocked = false;
@@ -50,8 +51,13 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            bool isShiftPressed = Keyboard.current.leftShiftKey.isPressed || Keyboard.current.rightShiftKey.isPressed;
-            bool isCtrlPressed = Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed;
+            Keyboard keyboard = Keyboard.current;
+
+            if (keyboard == null)
+                return;
+
+            bool isShiftPressed = keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
+            bool isCtrlPressed = keyboard.leftCtrlKey.isPressed || keyboard.rightCtrlKey.isPressed;
             if (!isShiftPressed || !isCtrlPressed)
             {
                 if (isLocked)
@@ -78,18 +84,25 @@ public class CameraController : MonoBehaviour
         }
 
 
-        /*      
-              bool isUp = Input.GetKey(KeyCode.PageUp);
-              bool isDown = Input.GetKey(KeyCode.PageDown);
-              if (isUp)
-              {
-                  SetViewPoint(++viewIndex);
-              }
-              if (isDown)
-              {
-                  SetViewPoint(--viewIndex);
-              }
-       */
+        /*  
+        
+        Keyboard keyboard = Keyboard.current;
+
+        if (keyboard == null)
+            return;
+
+        bool isUp = keyboard.pageUpKey.isPressed;
+        bool isDown = keyboard.pageDownKey.isPressed;
+        if (isUp)
+        {
+            SetViewPoint(++viewIndex);
+        }
+        if (isDown)
+        {
+            SetViewPoint(--viewIndex);
+        }
+
+        */
 
     }
 
