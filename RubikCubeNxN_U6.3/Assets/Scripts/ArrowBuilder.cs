@@ -12,7 +12,11 @@ public class ArrowBuilder : MonoBehaviour
 
     void CreateArrow(string name, char letter, Vector3 rot, Color color)
     {
+<<<<<<< HEAD
         Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+=======
+       Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+>>>>>>> 8de25d705cb4b260745069cd039968e10cab6ae1
         mat.color = color;
 
         GameObject arrow = new GameObject(name);

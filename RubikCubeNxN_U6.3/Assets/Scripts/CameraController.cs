@@ -1,7 +1,6 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
 
 
 public class CameraController : MonoBehaviour
@@ -13,12 +12,14 @@ public class CameraController : MonoBehaviour
     public float rotationX = -30f; // Rotation around X-axis
     public float rotationY = 30f; // Rotation around Y-axis
 
-    //private int viewIndex = 0;
+    private int viewIndex = 0;
+
     public Vector3 posCamera = Vector3.zero;
     public bool setPosCamera = false;
     bool isLocked = false;
 
     Vector2 posTouch = Vector2.zero;
+
 
     void Start()
     {
@@ -50,6 +51,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
+
             bool isShiftPressed = Keyboard.current.leftShiftKey.isPressed || Keyboard.current.rightShiftKey.isPressed;
             bool isCtrlPressed = Keyboard.current.leftCtrlKey.isPressed || Keyboard.current.rightCtrlKey.isPressed;
             if (!isShiftPressed || !isCtrlPressed)
@@ -77,19 +79,18 @@ public class CameraController : MonoBehaviour
             rotationY = Mathf.Clamp(rotationY, -60f, 60f);
         }
 
+        bool isUp = Keyboard.current.pageUpKey.isPressed;
+        bool isDown = Keyboard.current.pageDownKey.isPressed;
+        if (isUp)
+        {
+            SetViewPoint(++viewIndex);
+        }
+        if (isDown)
+        {
+            SetViewPoint(--viewIndex);
+        }
 
-        /*      
-              bool isUp = Input.GetKey(KeyCode.PageUp);
-              bool isDown = Input.GetKey(KeyCode.PageDown);
-              if (isUp)
-              {
-                  SetViewPoint(++viewIndex);
-              }
-              if (isDown)
-              {
-                  SetViewPoint(--viewIndex);
-              }
-       */
+        
 
     }
 

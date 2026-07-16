@@ -7,7 +7,7 @@ public class ButtonControl : MonoBehaviour
     public GameObject rubicCube;
     public GameObject mainCamera;
     public TextMeshProUGUI textMeshProUGUI;
-    private int viewIndex = 0;
+    //private int viewIndex = 0;
 
     void Start()
     {

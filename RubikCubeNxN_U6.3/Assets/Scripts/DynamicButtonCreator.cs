@@ -105,36 +105,36 @@ public class DynamicButtonCreator : MonoBehaviour
     {
         Debug.Log("Dynamic button up click!");
         if (inverze)
-            rubiCubeGenerator.RotateSubCubes(1, SetRows(0b10000));
+            rubiCubeGenerator.RotateSubCubes(2, SetRows(0b10000));
         else
-            rubiCubeGenerator.RotateSubCubes(4, SetRows(0b10000));
+            rubiCubeGenerator.RotateSubCubes(5, SetRows(0b10000));
     }
 
     private void OnButtonClickDown()
     {
         Debug.Log("Dynamic button down click!");
         if (inverze)
-            rubiCubeGenerator.RotateSubCubes(4, SetRows(0b00001));
+            rubiCubeGenerator.RotateSubCubes(5, SetRows(0b00001));
         else
-            rubiCubeGenerator.RotateSubCubes(1, SetRows(0b00001));
+            rubiCubeGenerator.RotateSubCubes(2, SetRows(0b00001));
     }
 
     private void OnButtonClickFront()
     {
         Debug.Log("Dynamic button front click!");
         if (inverze)
-            rubiCubeGenerator.RotateSubCubes(5, SetRows(0b00001));
+            rubiCubeGenerator.RotateSubCubes(4, SetRows(0b00001));
         else
-            rubiCubeGenerator.RotateSubCubes(2, SetRows(0b00001));
+            rubiCubeGenerator.RotateSubCubes(1, SetRows(0b00001));
     }
 
     private void OnButtonClickBack()
     {
         Debug.Log("Dynamic button back click!");
         if (inverze)
-            rubiCubeGenerator.RotateSubCubes(2, SetRows(0b10000));
+            rubiCubeGenerator.RotateSubCubes(1, SetRows(0b10000));
         else
-            rubiCubeGenerator.RotateSubCubes(5, SetRows(0b10000));
+            rubiCubeGenerator.RotateSubCubes(4, SetRows(0b10000));
     }
 
     private void OnButtonClickInv()

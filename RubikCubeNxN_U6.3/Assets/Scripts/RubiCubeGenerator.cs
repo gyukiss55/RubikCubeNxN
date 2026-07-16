@@ -58,7 +58,7 @@ public class RubiCubeGenerator : MonoBehaviour
         }
 
         rubicCubeChangeOrder = this.GetComponent<RubicCubeChangeOrder>();
-        //Assert.IsNotNull(rubicCubeChangeOrder);
+
         rubicCubeChangeOrder.Initialize(5);
     }
 
@@ -172,19 +172,19 @@ public class RubiCubeGenerator : MonoBehaviour
                 dir = Vector3.right;
                 break;
             case 1:
-                dir = Vector3.up;
+                dir = Vector3.back;
                 break;
             case 2:
-                dir = Vector3.forward;
+                dir = Vector3.up;
                 break;
             case 3:
                 dir = Vector3.left;
                 break;
             case 4:
-                dir = Vector3.down;
+                dir = Vector3.forward;
                 break;
             case 5:
-                dir = Vector3.back;
+                dir = Vector3.down;
                 break;
         }
         DumpCurrentCubeIndices();
@@ -203,9 +203,12 @@ public class RubiCubeGenerator : MonoBehaviour
         int mask = 1;
         for (int i = 0; i < rubicCubeChangeOrder.level - 1; ++i)
         {
-            if ((rows & mask) != 0)
+            if ((rows & mask) != 0) { 
                 rubicCubeChangeOrder.GetReplaceIndeces(dir, i, list);
-            Debug.Log($"mask:{mask}");
+                Debug.Log($"GetReplaceIndeces dir:{dir}, i:{i}\n");
+                foreach (Array4<int> a4 in list)
+                    Debug.Log($"Change index:{a4}");
+            }
             mask <<= 1;
         }
         foreach(Array4<int> a4 in list)
