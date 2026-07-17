@@ -68,7 +68,7 @@ public class RubicCubeChangeOrder : MonoBehaviour
             return false;
         for (int dir = 0; dir < 3; dir++)
         {
-            for (int lev = 0; lev < level - 1; lev++)
+            for (int lev = 0; lev < level; lev++)
             {
                 GenerateChangeOrder(dir, lev);
             }
@@ -80,10 +80,13 @@ public class RubicCubeChangeOrder : MonoBehaviour
     public void GenerateChangeOrder(int dir, int lev)
     {
         List<Array4<Vector3Int>> replaceOrder1 = new List<Array4<Vector3Int>>();
-        for (int coord1  = 0; coord1 < level - 1; coord1++)
+        for (int offset1 = 0; offset1 < (level - 1) / 2; offset1++)
         {
-            Array4<Vector3Int> arra4 =  GenerateArray4(dir, lev, coord1);
-            replaceOrder1.Add(arra4);
+            for (int coord1  = 0; coord1 < level - 1 - 2 * offset1; coord1++)
+            {
+                Array4<Vector3Int> arra4 =  GenerateArray4(dir, lev, coord1, offset1);
+                replaceOrder1.Add(arra4);
+            }
         }
         replaceOrder.Add(new Vector2Int(dir, lev), replaceOrder1);
     }
@@ -95,7 +98,7 @@ public class RubicCubeChangeOrder : MonoBehaviour
         return ret;
     }
 
-    Array4<Vector3Int> GenerateArray4(int dir, int lev, int coord1)
+    Array4<Vector3Int> GenerateArray4(int dir, int lev, int coord1, int offset1)
     {
         Array4<Vector3Int> ret = new Array4<Vector3Int>();
         Vector3Int v1;
@@ -106,24 +109,24 @@ public class RubicCubeChangeOrder : MonoBehaviour
         switch (dir)
         {
             case 0:
-                v1 = new Vector3Int(lev, coord1, 0);
-                v2 = new Vector3Int(lev, level - 1, coord1);
-                v3 = new Vector3Int(lev, level - 1 - coord1, level - 1);
-                v4 = new Vector3Int(lev, 0, level - 1 - coord1);
+                v1 = new Vector3Int(lev, coord1 + offset1, offset1);
+                v2 = new Vector3Int(lev, level - 1 - offset1, coord1 + offset1);
+                v3 = new Vector3Int(lev, level - 1 - coord1 - offset1, level - 1 - offset1);
+                v4 = new Vector3Int(lev, offset1, level - 1 - coord1 - offset1  );
                 ret = new Array4<Vector3Int>(v1,v2,v3,v4);
                 break;
             case 1:
-                v1 = new Vector3Int(0, lev, coord1);
-                v2 = new Vector3Int(coord1, lev, level - 1);
-                v3 = new Vector3Int(level - 1, lev, level - 1 - coord1);
-                v4 = new Vector3Int(level - 1 - coord1, lev, 0);
+                v1 = new Vector3Int(offset1, lev, coord1 + offset1);
+                v2 = new Vector3Int(coord1 + offset1, lev, level - 1 - offset1);
+                v3 = new Vector3Int(level - 1 - offset1, lev, level - 1 - coord1 - offset1);
+                v4 = new Vector3Int(level - 1 - coord1 - offset1, lev, offset1);
                 ret = new Array4<Vector3Int>(v1, v2, v3, v4);
                 break;
             case 2:
-                v1 = new Vector3Int(coord1, 0, lev );
-                v2 = new Vector3Int(level - 1, coord1, lev);
-                v3 = new Vector3Int(level - 1 - coord1, level - 1, lev);
-                v4 = new Vector3Int(0, level - 1 - coord1, lev);
+                v1 = new Vector3Int(coord1 + offset1,   offset1, lev );
+                v2 = new Vector3Int(level - 1 - offset1, coord1, lev);
+                v3 = new Vector3Int(level - 1 - coord1 - offset1, level - 1 - offset1, lev);
+                v4 = new Vector3Int(offset1, level - 1 - coord1 - offset1, lev);
                 ret = new Array4<Vector3Int>(v1, v2, v3, v4);
                 break;
 

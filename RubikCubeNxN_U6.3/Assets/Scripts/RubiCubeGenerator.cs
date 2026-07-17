@@ -40,7 +40,7 @@ public class RubiCubeGenerator : MonoBehaviour
                 for (int x = 0; x < 5; x++)
                 {
                     float xp = (x - mid) * mul;
-                    string name = $"cube{x + 1}{y + 1}{z + 1}";
+                    string name = $"cube{z + 1}{y + 1}{x + 1}-{z * 25 + y * 5 + x}";
                     GenerateCube(name, new Vector3(xp, yp, zp));
                 }
             }
@@ -171,7 +171,7 @@ public class RubiCubeGenerator : MonoBehaviour
             case 0:
                 dir = Vector3.right;
                 break;
-            case 1:
+            case 4:
                 dir = Vector3.back;
                 break;
             case 2:
@@ -180,7 +180,7 @@ public class RubiCubeGenerator : MonoBehaviour
             case 3:
                 dir = Vector3.left;
                 break;
-            case 4:
+            case 1:
                 dir = Vector3.forward;
                 break;
             case 5:
