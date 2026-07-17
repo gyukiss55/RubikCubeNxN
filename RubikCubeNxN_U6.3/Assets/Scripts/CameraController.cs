@@ -9,8 +9,10 @@ public class CameraController : MonoBehaviour
     public float distance = 10.0f; // Distance from the target
     public float sensitivity = 5.0f; // Sensitivity for mouse movement
 
-    public float rotationX = -30f; // Rotation around X-axis
-    public float rotationY = 30f; // Rotation around Y-axis
+    public float rotationX = -5f; // Rotation around X-axis
+    public float rotationY = 5f; // Rotation around Y-axis
+
+    public bool isLockedEnabled = false;
 
     private int viewIndex = 0;
 
@@ -28,6 +30,11 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if (!isLockedEnabled)
+        {
+            return;
+        }
+
         if (Application.platform == RuntimePlatform.Android)
         {
             // Code specific to Android

@@ -7,7 +7,7 @@ public class CubeManager : MonoBehaviour
     List<GameObject> cubeList = new List<GameObject>();
     List<int> cubeIndices = new List<int>();
     Dictionary<int, int> mapCubeIndices = new Dictionary<int, int>();
-    Dictionary<int, List<Vector3Int>>replaceMap = new Dictionary<int, List<Vector3Int>>();
+    //Dictionary<int, List<Vector3Int>>replaceMap = new Dictionary<int, List<Vector3Int>>();
 
     public void AddCube(GameObject cube, Vector3Int pos)
     {
@@ -31,11 +31,11 @@ public class CubeManager : MonoBehaviour
         }
     }
 
-    int KeyFromAxisLevel (int axis, int level) { 
+    static int KeyFromAxisLevel (int axis, int level) { 
         return level * 10 + axis; 
     }
 
-    int Vector3IntToInt(Vector3Int vec)
+    static int Vector3IntToInt(Vector3Int vec)
     {
         return (int)(vec.x + vec.y*100 + vec.z*10000);
     }

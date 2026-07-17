@@ -152,6 +152,7 @@ public class RubicCubeChangeOrder : MonoBehaviour
     {
         int dirNum = 0;
         bool inv = false;
+
         if (dir == Vector3.left || dir == Vector3.right)
         {
             if (dir == Vector3.left)

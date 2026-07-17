@@ -13,7 +13,7 @@ public class RubiCubeGenerator : MonoBehaviour
 
     RubicCubeChangeOrder rubicCubeChangeOrder = null;
 
-    List<GameObject> allSsubCubeList = new List<GameObject>();
+    List<GameObject> cubeList = new List<GameObject>();
     List<int> currentIndexList = new List<int>();
     List<int> nextIndexList = new List<int>();
     List<Vector3> originalPosList = new List<Vector3>();
@@ -45,6 +45,7 @@ public class RubiCubeGenerator : MonoBehaviour
                 }
             }
         }
+        JustCheck();
         Debug.Log("rubiCube: test");
         if (rubicCube != null)
         {
@@ -62,6 +63,16 @@ public class RubiCubeGenerator : MonoBehaviour
         rubicCubeChangeOrder.Initialize(5);
     }
 
+    void JustCheck()
+    {
+        Vector3 dir = Vector3.right;
+        Debug.Log($"Vector3.right: {dir.x}, {dir.y}, {dir.z}");
+        dir = Vector3.up;
+        Debug.Log($"Vector3.up: {dir.x}, {dir.y}, {dir.z}");
+        dir = Vector3.forward;
+        Debug.Log($"Vector3.forward: {dir.x}, {dir.y}, {dir.z}");
+    }
+
     void GenerateCube(string name, Vector3 pos)
     {
         // Create a new cube
@@ -70,7 +81,7 @@ public class RubiCubeGenerator : MonoBehaviour
         // Set the cube's position relative to this GameObject
         cube.transform.position = Vector3.zero;
 
-        // Make the cube a child of this GameObject
+        // Make the cube a child of this GameObjectdir = Vector3.right;
         cube.transform.parent = this.transform;
 
         // Optionally, adjust the cube's local position
@@ -97,7 +108,7 @@ public class RubiCubeGenerator : MonoBehaviour
         {
             rubiCubeIndicesMap.Add(new Vector3Int((int)pos.x, (int)pos.y, (int)pos.z), index++);
             cubeManager.AddCube(cube,new Vector3Int ((int)pos.x, (int)pos.y, (int)pos.z));
-            allSsubCubeList.Add(cube);
+            cubeList.Add(cube);
             originalPosList.Add(pos);
             currentIndexList.Add(currentIndexList.Count);
         }
@@ -106,10 +117,10 @@ public class RubiCubeGenerator : MonoBehaviour
     public void ResetSubCubes()
     {
         Debug.Log("ResetSubCubes");
-        for (int i = 0; i < allSsubCubeList.Count; ++i)
+        for (int i = 0; i < cubeList.Count; ++i)
         {
-            allSsubCubeList[i].transform.localPosition = originalPosList[i];
-            allSsubCubeList[i].transform.localRotation = Quaternion.identity;
+            cubeList[i].transform.localPosition = originalPosList[i];
+            cubeList[i].transform.localRotation = Quaternion.identity;
             currentIndexList[i] = i;
         }
     }
@@ -164,6 +175,15 @@ public class RubiCubeGenerator : MonoBehaviour
 
     public void RotateSubCubes(int directionNum, int rows) // direction -> X, Y, Z, x, y, z /  rows -> 0b00001, 0b10000, 0b00011, 0b11000, 0b11111,
     {
+        if(!isMovingDone)
+        {
+            Debug.Log("RotateSubCubes: isMovingDone false");
+            return;
+        }
+        isMovingDone = false;
+
+        RefreshIndexList();
+
         List<int> rotSubCubeList = new List<int>();
         Vector3 dir = Vector3.zero;
         switch (directionNum)
@@ -188,12 +208,53 @@ public class RubiCubeGenerator : MonoBehaviour
                 break;
         }
         DumpCurrentCubeIndices();
-        SelectIndices(dir, rows, rotSubCubeList);
-        SetNextIndexList(dir, rows);
+        SelectIndices(directionNum, rows, rotSubCubeList);
+        //SetNextIndexList(dir, rows);
         ExecuteRotateCube(dir, rotSubCubeList);
-        nextIndexList = currentIndexList;
-        DumpCurrentCubeIndices();
+        //nextIndexList = currentIndexList;
+        //DumpCurrentCubeIndices();
         Debug.Log($"RotateSubCubes:{dir}, rows:{rows}");
+    }
+
+
+    static int Vector3ToInt(Vector3 vec)
+    {
+        const float Eps = 0.001f;
+        return (int)(vec.x*10 + (vec.y * 10) * 1000 + (vec.z * 10) * 1000000);
+    }
+
+    void RefreshIndexList ()
+    {
+        List<int> refreshIndexList = new List<int>();
+        SortedDictionary<int, int> sortedPairList = new SortedDictionary<int, int>();
+
+        for (int i = 0; i < cubeList.Count; i++)
+        {
+            Vector3 pos = cubeList[i].transform.localPosition;
+            int key = Vector3ToInt(pos);
+            if (sortedPairList.ContainsKey(key))
+            {
+                Debug.LogWarning($"!!! RefreshIndexList: duplicate key:{key}, i:{i},n:{cubeList.Count}");
+                for (int k = 0; k < cubeList.Count; k++)
+                {
+                    Vector3 posTmp = cubeList[k].transform.localPosition;
+                    int keyTmp = Vector3ToInt(posTmp);
+                    Debug.Log($"{k}.{posTmp}-{keyTmp}");
+                }
+            }
+            sortedPairList.Add(key, i);
+        }
+        int j = 0;
+        Debug.Log($"RefreshIndexList:{sortedPairList.Count}\n");
+        foreach (var pair in sortedPairList)
+        {
+            refreshIndexList.Add(pair.Value);
+            Debug.Log($"{j}.{pair.Key}-{pair.Value}&");
+            j++; 
+        }
+        Debug.Log("RefreshIndexList end\n");
+
+        currentIndexList = refreshIndexList;
     }
 
     void SetNextIndexList (Vector3 dir, int rows)
@@ -239,7 +300,7 @@ public class RubiCubeGenerator : MonoBehaviour
             float rotationAngle = Mathf.Min(Time.deltaTime * speed, remainingAngle);
             for (int i = 0; i < subCubeList.Count; i++)
             {
-                allSsubCubeList[subCubeList[i]].transform.RotateAround(rotationCenter, rotationAxis, rotationAngle);
+                cubeList[subCubeList[i]].transform.RotateAround(rotationCenter, rotationAxis, rotationAngle);
             }
             remainingAngle -= rotationAngle;
             yield return null;
@@ -256,7 +317,60 @@ public class RubiCubeGenerator : MonoBehaviour
         StartCoroutine(RotateCubeFinish());
     }
 
-    void SelectIndices(Vector3 dir, int rows, List<int> subCubeList)
+    void SelectIndices(int directionNum, int rows, List<int> subCubeList)// directionNum -> X, Y, Z, x, y, z /  rows -> 0b00001, 0b10000, 0b00011, 0b11000, 0b11111,
+    {
+
+        float level = 0f;
+        Vector3 dir = Vector3.zero;
+        switch (directionNum)
+        {
+            case 0:
+            case 3:
+                dir = Vector3.right;
+                break;
+            case 2:
+            case 5:
+                dir = Vector3.up;
+                break;
+            case 1:
+            case 4:
+                dir = Vector3.forward;
+                break;
+        }
+        Vector3 posMin = cubeList[0].transform.localPosition;
+        Vector3 posMax = cubeList[cubeList.Count - 1].transform.localPosition;
+        int Level = rubicCubeChangeOrder.level;
+        float mul = (posMax.x - posMin.x) / (Level - 1);
+        //Vector3 distance = (dir - posMin) / (Level - 1);
+        int step = 0;
+        for (int mask = 1; mask < 0b11111; mask <<= 1, step++)
+        {
+            if ((mask & rows) == 0)
+                continue;
+            Vector3 pos = posMin + dir * step * mul;
+            Debug.Log($"!!!level: step:{step}, pos:{pos}, min:{posMin}, max:{posMax}, dir:{dir}, rows:{rows}");
+            List<int> subCubeIndices = new List<int>();
+            for(int i = 0; i < cubeList.Count; i++)
+            {
+                GameObject cube = cubeList[i];
+                Vector3 cubePos = cube.transform.localPosition;
+                float dotProduct = Vector3.Dot(cubePos - pos, dir);
+                if (Mathf.Abs(dotProduct) < 0.01f)
+                {
+                    subCubeIndices.Add(i);
+                }
+            }
+            if (subCubeIndices.Count > 0)
+            {
+                if (subCubeIndices.Count == Level * Level)
+                    subCubeList.AddRange(subCubeIndices);
+                else
+                    Debug.LogWarning($"SelectIndices: subCubeIndices.Count != Level * Level, count:{subCubeIndices.Count}, Level:{Level}");
+            }
+        }
+    }
+
+    void SelectIndicesOld(Vector3 dir, int rows, List<int> subCubeList)
     {
         int setRows = 0;
         int mask = 1;
