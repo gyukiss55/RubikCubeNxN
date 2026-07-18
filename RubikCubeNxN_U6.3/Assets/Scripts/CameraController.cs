@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     public float rotationX = -5f; // Rotation around X-axis
     public float rotationY = 5f; // Rotation around Y-axis
 
-    public bool isLockedEnabled = false;
+    public bool isLockedEnabled = true;
 
     private int viewIndex = 0;
 

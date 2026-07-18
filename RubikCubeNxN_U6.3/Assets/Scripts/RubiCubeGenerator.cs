@@ -20,6 +20,10 @@ public class RubiCubeGenerator : MonoBehaviour
 
     bool isMovingDone = true;
 
+    Vector3 posMin = Vector3.zero;
+    Vector3 posMax = Vector3.zero;
+
+
     void Start()
     {
         Generate5x5x5Rubic();
@@ -337,8 +341,11 @@ public class RubiCubeGenerator : MonoBehaviour
                 dir = Vector3.forward;
                 break;
         }
-        Vector3 posMin = cubeList[0].transform.localPosition;
-        Vector3 posMax = cubeList[cubeList.Count - 1].transform.localPosition;
+        if (posMin == posMax)
+        {
+            posMin = cubeList[0].transform.localPosition;
+            posMax = cubeList[cubeList.Count - 1].transform.localPosition;
+        }
         int Level = rubicCubeChangeOrder.level;
         float mul = (posMax.x - posMin.x) / (Level - 1);
         //Vector3 distance = (dir - posMin) / (Level - 1);
