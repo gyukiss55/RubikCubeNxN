@@ -30,6 +30,10 @@ public class RubiCubeGenerator : MonoBehaviour
         DumpCurrentCubeIndices();
     }
 
+    public bool IsMovingDone()
+    {
+        return isMovingDone;
+    }
 
     void Generate5x5x5Rubic()
     {
@@ -223,7 +227,6 @@ public class RubiCubeGenerator : MonoBehaviour
 
     static int Vector3ToInt(Vector3 vec)
     {
-        const float Eps = 0.001f;
         return (int)(vec.x*10 + (vec.y * 10) * 1000 + (vec.z * 10) * 1000000);
     }
 
@@ -324,7 +327,6 @@ public class RubiCubeGenerator : MonoBehaviour
     void SelectIndices(int directionNum, int rows, List<int> subCubeList)// directionNum -> X, Y, Z, x, y, z /  rows -> 0b00001, 0b10000, 0b00011, 0b11000, 0b11111,
     {
 
-        float level = 0f;
         Vector3 dir = Vector3.zero;
         switch (directionNum)
         {
